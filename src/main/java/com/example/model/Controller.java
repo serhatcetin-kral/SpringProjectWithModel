@@ -1,5 +1,6 @@
 package com.example.model;
 
+import java.io.IOException;
 //import java.awt.PageAttributes.MediaType;
 import java.util.List;
 
@@ -112,6 +113,39 @@ public class Controller {
 	        return ResponseEntity.ok().contentType(MediaType.valueOf(product.getImageType())).body(imageFile);
 
 	    }
-	 
+	    
+	    
+	    @PutMapping("/product/{id}")
+	    public ResponseEntity<String> updateProduct(@PathVariable int id, @RequestPart Products product, @RequestPart MultipartFile imageFile) {
+
+	        Products product1 = null;
+	        try {
+	            product1 = service.updateProduct(id, product, imageFile);
+	        } catch (IOException e) {
+	            return new ResponseEntity<>("Failed to update", HttpStatus.BAD_REQUEST);
+	        }
+	        if (product1 != null) {
+	            return new ResponseEntity<>("updated", HttpStatus.OK);
+	        } else {
+	            return new ResponseEntity<>("Failed to update", HttpStatus.BAD_REQUEST);
+	        }
+
+
+	    }
+
+
+	    @DeleteMapping("/product/{id}")
+	    public ResponseEntity<String> deleteProduct(@PathVariable int id) {
+	        Products product = service.getProductById(id);
+	        if (product != null) {
+	            service.deleteProduct(id);
+	            return new ResponseEntity<>("Deleted", HttpStatus.OK);
+	        } else {
+	            return new ResponseEntity<>("Product not found", HttpStatus.NOT_FOUND);
+	        }
+
+	    }
+	    
+	    
 
 }

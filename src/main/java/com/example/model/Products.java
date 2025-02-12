@@ -7,6 +7,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Lob;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -32,6 +33,32 @@ public class Products{
 	private Date releaseDate;
 	private boolean available;
 	private int quantity;
+	
+	private String imageName;
+	private String imageType;
+	@Lob
+	private byte[] imageDate;
+	
+	
+	
+	public String getImageName() {
+		return imageName;
+	}
+	public void setImageName(String imageName) {
+		this.imageName = imageName;
+	}
+	public String getImageType() {
+		return imageType;
+	}
+	public void setImageType(String imageType) {
+		this.imageType = imageType;
+	}
+	public byte[] getImageDate() {
+		return imageDate;
+	}
+	public void setImageDate(byte[] imageDate) {
+		this.imageDate = imageDate;
+	}
 	public int getId() {
 		return id;
 	}

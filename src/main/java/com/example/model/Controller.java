@@ -1,5 +1,6 @@
 package com.example.model;
 
+//import java.awt.PageAttributes.MediaType;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +11,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.http.MediaType;
 
 @RestController
 @CrossOrigin
@@ -71,8 +76,42 @@ public class Controller {
 		
 	}
 	
+	@PostMapping("product")
+	public ResponseEntity<?> addProduct(@RequestPart Products product,@RequestPart MultipartFile imageFile){
+		try {
+		Products product1=service.addProduct(product,imageFile);
+		return new ResponseEntity<>(product1,HttpStatus.CREATED);
+		}
+		catch(Exception e){
+			return new ResponseEntity<>(e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
+			
+		}
+	}	
 	
-	
-	
+//	 @GetMapping("/product/{productId}/image")
+//	 public ResponseEntity<byte[]> getImageByProductId(@PathVariable int productId){
+//		 
+//		 Products product=service.getProductById(productId);
+//		 
+//		 byte[] imageFile=product.getImageDate();
+////		 String imageType = product.getImageType();
+////		 MediaType mediaType = MediaType.valueOf(imageType); 
+//		 
+//		 return ResponseEntity.ok()
+//				 .contentType(org.springframework.http.MediaType.)
+//				 .body(imageFile);
+//		 
+//	//	 .contentType(MediaType.valueOf(product.getImageType()))
+//		 
+//	 }
+	    @GetMapping("/product/{productId}/image")
+	    public ResponseEntity<byte[]> getImageByProductId(@PathVariable int productId) {
+	        Products product = service.getProductById(productId);
+	        byte[] imageFile = product.getImageDate();
+
+	        return ResponseEntity.ok().contentType(MediaType.valueOf(product.getImageType())).body(imageFile);
+
+	    }
+	 
 
 }
